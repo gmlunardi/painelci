@@ -38,6 +38,9 @@ function init_painel(){
 	set_tema('titulo_padrao', 'Painel ADM');
 	set_tema('rodape', '<p>&copy; 2014 | Todos os direitos reservados para RBTech.Info');
 	set_tema('template', 'painel_view');
+
+	set_tema('headerinc', load_css(array('foundation.min', 'app')), FALSE);
+	set_tema('footerinc', load_js(array('foundation.min')), FALSE);
 }
 
 //carrega um template passando o array $tema como parametro
@@ -47,3 +50,43 @@ function load_template(){
 	$CI->parser->parse($CI->sistema->tema['template'], get_tema());
 }
 
+//carrega um ou vários arquivos .css de uma pasta
+function load_css($arquivo=NULL, $pasta='css', $media='all'){
+	if ($arquivo != NULL):
+		$CI =& get_instance();
+		$CI->load->helper('url');
+		$retorno = '';
+		if (is_array($arquivo)):
+			foreach ($arquivo as $css) 
+				$retorno .= '<link rel="stylesheet" type="text/css" href="'.base_url("$pasta/$css.css").'" media="'.$media.'" />';
+		else:
+			$retorno = '<link rel="stylesheet" type="text/css" href="'.base_url("$pasta/$arquivo.css").'" media="'.$media.'" />';
+		endif;
+	endif;
+	return $retorno;
+}
+
+//carrega um ou vários arquivos .js de uma pasta ou servidor remoto. 
+function load_js($arquivo=NULL, $pasta='js', $remoto=FALSE){
+	if ($arquivo != NULL):
+		$CI =& get_instance();
+		$CI->load->helper('url');
+		$retorno = '';
+		if (is_array($arquivo)):
+			foreach ($arquivo as $js):
+				if ($remoto):
+					$retorno .= '<script type="text/javascript" src="'.$js.'"></script>';
+				else:
+					$retorno .= '<script type="text/javascript" src="'.base_url("$pasta/$js.js").'"></script>';
+				endif;
+			endforeach;
+		else:
+			if ($remoto):
+				$retorno .= '<script type="text/javascript" src="'.$arquivo.'"></script>';
+			else:
+				$retorno .= '<script type="text/javascript" src="'.base_url("$pasta/$arquivo.js").'"></script>';
+			endif;
+		endif;
+	endif;
+	return $retorno;
+}

@@ -4,12 +4,15 @@
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title><?php if (isset($titulo)): ?> {titulo} <?php endif; ?> {titulo_padrao}</title>
-	<link rel="stylesheet" href="css/foundation.css" />
+	{headerinc}
 </head>
 <body>
-	{conteudo}
-	<script src="js/foundation.min.js"></script>
+	<div class="row paineladm">
+		{conteudo}
+	</div>
+	
 	{rodape}
+	{footerinc}
 </body>
 
 </html>

@@ -15,7 +15,7 @@ class Usuarios extends CI_Controller {
 	public function login(){
 		set_tema('titulo','Login');
 		set_tema('conteudo', load_modulo('usuarios','login'));
-		//set_tema('rodape', '<p>novo rodapé</p>', FALSE);
+		set_tema('rodape', '');
 		load_template();
 	}
 }
