@@ -34,6 +34,7 @@ function init_painel(){
 	$CI->load->library(array('sistema','session','form_validation'));
 	$CI->load->helper(array('form','url','array','text'));
 	//carregamento dos models
+	$CI->load->model('usuarios_model');
 
 	set_tema('titulo_padrao', 'Painel ADM');
 	set_tema('rodape', '<p>&copy; 2014 | Todos os direitos reservados para RBTech.Info');
@@ -89,4 +90,9 @@ function load_js($arquivo=NULL, $pasta='js', $remoto=FALSE){
 		endif;
 	endif;
 	return $retorno;
+}
+
+//função que exibe erros em formulários
+function erros_validacao(){
+	if (validation_errors()) echo '<div class="alert-box alert">'.validation_errors('<p>','</p>').'</div>';
 }

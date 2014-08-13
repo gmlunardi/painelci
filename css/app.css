@@ -1,3 +1,7 @@
 .loginform{
 	margin-top: 200px;
 }
+
+.alert-box p{
+	margin: 0 !important;
+}
