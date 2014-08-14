@@ -8,13 +8,13 @@
 </head>
 <body>
 	<?php if(esta_logado(FALSE)): ?>
-		<div class="row header">
-			<div class="eight clumns">
-				<a href="<?php echo base_url('painel'); ?>"><h1>Painel ADM</h1></a>
+		<div class="row">
+			<div class="large-3 columns">
+				<h2>Painel ADM</h2>
 			</div>
-			<div class="four columns">
+			<div class="large-9 columns">
 				<p class="text-right">Logado como <strong><?php echo $this->session->userdata('username'); ?></strong></p>
-				<p class="text right">
+				<p class="text-right">
 					<?php echo anchor('usuarios/alterar_senha/'.$this->session->userdata('user_id'), 'Alterar senha', 'class="button radius tiny"'); ?>
 					<?php echo anchor('usuarios/logoff', 'Sair', 'class="button radius tiny alert"'); ?>
 				</p>
@@ -48,15 +48,13 @@
 
 		<?php endif; ?>
 		<div class="row paineladm">
-			<div class="twelve columns menu-site">
+			<div class="twelve columns conteudo">
 				{conteudo}
 			</div>
 		</div>
 		<div class="row">
-			<div class="twelve columns menu-site">
-				<p class="text centered">
+			<div class="twelve columns text-center rodape">
 					{rodape}
-				</p>
 			</div>
 		</div>
 		{footerinc}
