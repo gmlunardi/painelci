@@ -4,7 +4,6 @@ class Usuarios extends CI_Controller {
 
 	public function __construct(){
 		parent::__construct();
-		$this->load->library('sistema');
 		init_painel();
 	}
 
@@ -19,7 +18,10 @@ class Usuarios extends CI_Controller {
 			$usuario = $this->input->post('usuario', TRUE); //TRUE XSS CLEAN para eliminar chances de SQL injeqtions
 			$senha = md5($this->input->post('senha', TRUE)); 
 			if ($this->usuarios_model->do_login($usuario, $senha) == TRUE):
-				echo 'login OK';
+				$query = $this->usuarios_model->get_bylogin($usuario)->row();
+				$dados = array('user_id' => $query->id, 'username' => $query->nome, 'user_admin' => $query->adm, 'user_logado' => TRUE);
+				$this->session->set_userdata($dados);
+				redirect('painel');
 			else:
 				echo 'login falhou';
 			endif;

@@ -96,3 +96,20 @@ function load_js($arquivo=NULL, $pasta='js', $remoto=FALSE){
 function erros_validacao(){
 	if (validation_errors()) echo '<div class="alert-box alert">'.validation_errors('<p>','</p>').'</div>';
 }
+
+//verifica se o usuário está logado no sistema
+function esta_logado($redir = TRUE){
+	$CI =& get_instance();
+	$CI->load->library('session');
+	$user_status = $CI->session->userdata('user_logado');
+	if (!isset($user_status) || $user_status != TRUE):
+		$CI->session->sess_destroy();
+		if ($redir):
+			redirect('usuarios/login');
+		else:
+			return FALSE;
+		endif;
+	else:
+		return TRUE;
+	endif;
+}
