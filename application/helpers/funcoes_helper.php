@@ -104,6 +104,7 @@ function esta_logado($redir = TRUE){
 	$user_status = $CI->session->userdata('user_logado');
 	if (!isset($user_status) || $user_status != TRUE):
 		if ($redir):
+			set_msg('errologin', 'Acesso Restrito, você deve possuir um cadastro antes de prosseguir!', 'erro');
 			redirect('usuarios/login');
 		else:
 			return FALSE;
@@ -139,5 +140,18 @@ function get_msg($id, $printar = TRUE){
 		else:
 			return $CI->session->flashdata($id);
 		endif;
+	endif;
+}
+
+// verifica se o usuario atual é administrador
+function is_admin($set_msg = FALSE){
+	$CI =& get_instance();
+	$user_admin = $CI->session->userdata('user_admin');
+	if (!isset($user_admin) || $user_admin != TRUE):
+		if ($set_msg)
+			set_msg('msgerro', 'Seu usuário não tem permissão para executar esta operação!', 'erro');
+		return FALSE;
+	else:
+		return TRUE;
 	endif;
 }

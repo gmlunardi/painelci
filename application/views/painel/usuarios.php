@@ -15,6 +15,7 @@ switch ($tela):
 		echo form_submit(array('name' => 'logar', 'class' => 'button radius right'), 'Login');
 		echo '<p>'.anchor('usuarios/nova_senha', 'Esqueci minha senha').'</p>';
 		echo form_fieldset_close();
+		echo form_close();
 		echo '</div>';
 		break;
 	case 'nova_senha':
@@ -29,6 +30,47 @@ switch ($tela):
 		echo form_submit(array('name' => 'novasenha', 'class' => 'button radius right'), 'Enviar nova senha');
 		echo '<p>'.anchor('usuarios/login', 'Fazer Login').'</p>';
 		echo form_fieldset_close();
+		echo form_close();
+		echo '</div>';
+		break;
+	case 'cadastrar':
+		echo '<div class="twelve columns">';
+		erros_validacao();
+		get_msg('msgok');
+		echo form_open('usuarios/cadastrar', array('class' => 'custom'));
+		echo form_fieldset('Cadastrar novo usuário');
+		echo form_label('Nome Completo');
+
+		echo '<div class="row"> <div class="large-5 columns"> ';
+		echo form_input(array('name' => 'nome'), set_value('nome'), 'autofocus');
+		echo '</div></div>';
+
+		echo form_label('Email');
+		echo '<div class="row"> <div class="large-5 columns"> ';
+		echo form_input(array('name' => 'email', 'class' => 'large-5 columns'), set_value('email'));
+		echo '</div></div>';
+
+		echo form_label('Login');
+		echo '<div class="row"> <div class="large-4 columns"> ';
+		echo form_input(array('name' => 'login', 'class' => 'three'), set_value('login'));
+		echo '</div></div>';
+
+		echo form_label('Senha');
+		echo '<div class="row"> <div class="large-4 columns"> ';
+		echo form_password(array('name' => 'senha', 'class' => 'three'), set_value('senha'));
+		echo '</div></div>';
+
+		echo form_label('Repita a Senha');
+		echo '<div class="row"> <div class="large-4 columns"> ';
+		echo form_password(array('name' => 'senha2', 'class' => 'three'), set_value('repita a senha'));
+		echo '</div></div>';
+
+		echo form_checkbox(array('name' => 'adm'), '1').' Dar poderes administrativos a este usuário <br/> <br/>';
+		echo anchor('usuarios/gerenciar', 'Cancelar', array('class' => 'button radius alert'));
+		echo '&nbsp';
+		echo form_submit(array('name' => 'cadastrar', 'class' => 'button radius'), 'Guardar Usuário');
+		echo form_fieldset_close();
+		echo form_close();
 		echo '</div>';
 		break;
 	default:
