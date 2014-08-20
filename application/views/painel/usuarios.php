@@ -17,6 +17,20 @@ switch ($tela):
 		echo form_fieldset_close();
 		echo '</div>';
 		break;
+	case 'nova_senha':
+		echo '<div class="small-5 small-centered columns">';
+		echo form_open('usuarios/nova_senha', array('class' => 'custom loginform'));
+		echo form_fieldset('Recuperação de senha');
+		erros_validacao();
+		get_msg('msgok');
+		get_msg('msgerro');
+		echo form_label('Seu e-mail');
+		echo form_input(array('name' => 'email'), set_value('e-mail'), 'autofocus');
+		echo form_submit(array('name' => 'novasenha', 'class' => 'button radius right'), 'Enviar nova senha');
+		echo '<p>'.anchor('usuarios/login', 'Fazer Login').'</p>';
+		echo form_fieldset_close();
+		echo '</div>';
+		break;
 	default:
 		echo '<div class="alert-box alert><p>A tela solicitada não existe</p></div>"';
 		break;
