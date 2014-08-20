@@ -82,4 +82,26 @@ class Usuarios extends CI_Controller {
 		load_template();
 	}
 
+	public function cadastrar(){
+		esta_logado();
+		$this->form_validation->set_message('is_unique', 'Este %s já está cadastrado no sistema');
+		$this->form_validation->set_message('matches', 'O campo %s está diferente do campo %s');
+		$this->form_validation->set_rules('nome', 'NOME', 'trim|required|ucwords');
+		$this->form_validation->set_rules('email', 'EMAIL', 'trim|required|valid_email|is_unique[usuarios.email]|strtolower');
+		$this->form_validation->set_rules('login', 'LOGIN', 'trim|required|min_length[4]|is_unique[usuarios.login]|strtolower');
+		$this->form_validation->set_rules('senha', 'SENHA', 'trim|required|min_length[4]|strtolower');
+		$this->form_validation->set_rules('senha2', 'REPITA A SENHA', 'trim|required|min_length[4]|strtolower|matches[senha]');
+		if ($this->form_validation->run() == TRUE):
+			$dados = elements(array('nome', 'email', 'login'), $this->input->post());
+			$dados['senha'] = md5($this->input->post('senha'));
+			if (is_admin())
+				$dados['adm'] = ($this->input->post('adm') == 1) ? 1 : 0;
+			$this->usuarios_model->do_insert($dados);
+		endif;
+
+		set_tema('titulo','Criar novo Usuário');
+		set_tema('conteudo', load_modulo('usuarios','cadastrar'));
+		load_template();
+	}
+
 }
