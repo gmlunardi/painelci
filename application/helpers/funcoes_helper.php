@@ -39,8 +39,8 @@ function init_painel(){
 	set_tema('titulo_padrao', 'Painel ADM');
 	set_tema('rodape', '<p>&copy; 2014 | Todos os direitos reservados para RBTech.Info');
 	set_tema('template', 'painel_view');
-
-	set_tema('headerinc', load_css(array('foundation.min', 'app')), FALSE);
+	
+	set_tema('headerinc', load_css(array('foundation.min', 'app', 'foundation-icons')), FALSE);
 	set_tema('footerinc', load_js(array('foundation.min')), FALSE);
 }
 

@@ -28,7 +28,7 @@
 						<!-- Left Nav Section -->
 						<ul class="left">
 							<li class="divider"></li>
-							<li class="active"><?php echo anchor('painel', 'Início'); ?></li>
+							<li class=""><?php echo anchor('painel', 'Início'); ?></li>
 							<li class="divider"></li>
 							<li class="divider"></li>
 							<li class="has-dropdown"><?php echo anchor('usuarios/gerenciar', 'Usuários') ?>
