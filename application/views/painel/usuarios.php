@@ -108,6 +108,33 @@ switch ($tela):
 				
 		<?php
 		break;
+	case 'visualizar':
+		echo '<div class="large-12 columns">';
+		$id = $this->uri->segment(3);
+		$query = $this->usuarios_model->get_byid($id)->row();
+
+		$ativo = ($query->ativo == 0) ? 'Não' : 'Sim';
+		$adm = ($query->adm == 0) ? 'Não' : 'Sim';
+
+		echo form_fieldset('Detalhes do Usuário');
+		echo '<div class="row"><div class="small-3 large-5 columns">';
+		echo 'Nome '.form_input('', $query->nome, 'disabled');
+		echo "</div></div>";
+		echo '<div class="row"><div class="small-3 large-5 columns">';
+		echo 'Email '.form_input('', $query->email, 'disabled');
+		echo "</div></div>";
+		echo '<div class="row"><div class="small-3 large-3 columns">';
+		echo 'Login '.form_input('', $query->login, 'disabled');
+		echo "</div></div>";
+		echo '<div class="row"><div class="small-2 large-1 columns">';
+		echo 'Ativo '.form_input('', $ativo, 'disabled');
+		echo "</div></div>";
+		echo '<div class="row"><div class="small-2 large-1 columns">';
+		echo 'Administrador '.form_input('', $adm, 'disabled');
+		echo "</div></div>";
+		echo '</div>';
+		echo form_fieldset_close();
+		break;
 	default:
 		echo '<div class="alert-box alert><p>A tela solicitada não existe</p></div>"';
 		break;

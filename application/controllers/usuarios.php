@@ -115,4 +115,12 @@ class Usuarios extends CI_Controller {
 		load_template();
 	}
 
+	public function visualizar(){
+		esta_logado();
+
+		set_tema('titulo','Ver detalhes do usuário');
+		set_tema('conteudo', load_modulo('usuarios','visualizar'));
+		load_template();
+	}
+
 }

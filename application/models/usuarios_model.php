@@ -64,4 +64,14 @@ class Usuarios_model extends CI_Model{
 		return $this->db->get('usuarios');
 	}
 
+	public function get_byid($id = NULL){
+		if ($id != NULL):
+			$this->db->where('id', $id);
+			$this->db->limit(1);
+			return $this->db->get('usuarios');
+		else:
+			return FALSE;
+		endif;
+	}
+
 }
