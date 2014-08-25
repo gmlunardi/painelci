@@ -76,6 +76,7 @@ switch ($tela):
 	case 'gerenciar':
 		?>
 			<div class="large-12 columns">
+			<?php get_msg('msgerro'); ?>
 				<table class="tabela">
 					<thead>
 						<tr>
@@ -118,22 +119,79 @@ switch ($tela):
 
 		echo form_fieldset('Detalhes do Usuário');
 		echo '<div class="row"><div class="small-3 large-5 columns">';
-		echo 'Nome '.form_input('', $query->nome, 'disabled');
+		echo form_label('Nome do Usuário');
+		echo form_input(array('name' => 'nome', 'disabled' => 'disabled'), set_value('nome', $query->nome));
 		echo "</div></div>";
 		echo '<div class="row"><div class="small-3 large-5 columns">';
-		echo 'Email '.form_input('', $query->email, 'disabled');
+		echo form_label('E-mail');
+		echo form_input(array('name' => 'email', 'disabled' => 'disabled'), set_value('email', $query->email));
 		echo "</div></div>";
 		echo '<div class="row"><div class="small-3 large-3 columns">';
-		echo 'Login '.form_input('', $query->login, 'disabled');
+		echo form_label('Login');
+		echo form_input(array('name' => 'login', 'disabled' => 'disabled'), set_value('login', $query->login));
 		echo "</div></div>";
 		echo '<div class="row"><div class="small-2 large-1 columns">';
-		echo 'Ativo '.form_input('', $ativo, 'disabled');
+		echo form_label('Ativo');
+		echo form_input(array('name' => 'ativo', 'disabled' => 'disabled'), set_value('ativo', $ativo));
 		echo "</div></div>";
 		echo '<div class="row"><div class="small-2 large-1 columns">';
-		echo 'Administrador '.form_input('', $adm, 'disabled');
+		echo form_label('Administrador');
+		echo form_input(array('name' => 'adm', 'disabled' => 'disabled'), set_value('adm', $adm));
 		echo "</div></div>";
 		echo '</div>';
 		echo form_fieldset_close();
+		break;
+	case 'alterar_senha':
+		$id_user = $this->uri->segment(3);
+		if ($id_user == NULL):
+			set_msg('msgerro', 'Você precisa de um usuário para alterar a senha');
+			redirect('usuarios/gerenciar');
+		endif;
+		echo '<div class="large-12 columns">';
+			if (is_admin(TRUE) || $id_user == $this->session->userdata('user_id')):
+				$query = $this->usuarios_model->get_byid($id_user)->row();
+				erros_validacao();
+				get_msg('msgok');
+
+				echo form_open(current_url(), array('class' => 'custom'));
+				echo form_fieldset('Alterar Senha');
+				echo form_label('Nome Completo');
+
+				echo '<div class="row"> <div class="large-5 columns"> ';
+				echo form_input(array('name' => 'nome', 'disabled' => 'disabled'), set_value('nome', $query->nome));
+				echo '</div></div>';
+
+				echo form_label('Email');
+				echo '<div class="row"> <div class="large-5 columns"> ';
+				echo form_input(array('name' => 'email', 'disabled' => 'disabled'), set_value('email', $query->email));
+				echo '</div></div>';
+
+				echo form_label('Login');
+				echo '<div class="row"> <div class="large-4 columns"> ';
+				echo form_input(array('name' => 'login', 'disabled' => 'disabled'), set_value('login', $query->login));
+				echo '</div></div>';
+
+				echo form_label('Nova Senha');
+				echo '<div class="row"> <div class="large-4 columns"> ';
+				echo form_password(array('name' => 'senha'), set_value('senha'), 'autofocus');
+				echo '</div></div>';
+
+				echo form_label('Repita a nova Senha');
+				echo '<div class="row"> <div class="large-4 columns"> ';
+				echo form_password(array('name' => 'senha2'), set_value('repitaasenha'));
+				echo '</div></div>';
+
+				echo anchor('usuarios/gerenciar', 'Cancelar', array('class' => 'button radius alert'));
+				echo '&nbsp';
+				echo form_submit(array('name' => 'alterar_senha', 'class' => 'button radius'), 'Salvar nova senha');
+				echo form_hidden('idusuario', $id_user);
+				echo form_fieldset_close();
+				echo form_close();
+				echo '</div>';
+			else:
+				redirect('usuarios/gerenciar');
+			endif;
+		echo '</div>';
 		break;
 	default:
 		echo '<div class="alert-box alert><p>A tela solicitada não existe</p></div>"';
