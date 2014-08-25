@@ -77,6 +77,7 @@ switch ($tela):
 		break;
 	case 'gerenciar':
 		?>
+
 			<div class="large-12 columns">
 			<?php 
 				get_msg('msgerro'); 
@@ -103,15 +104,14 @@ switch ($tela):
 								printf('<td>%s / %s</td>', ($linha->ativo == 0) ? 'Não' : 'Sim', ($linha->adm == 0) ? 'Não' : 'Sim');
 								printf('<td class="text-center">%s%s%s</td>', 
 									anchor("usuarios/editar/$linha->id", ' ', array('class' => 'fi-page-edit size-18')),  
-									anchor("usuarios/excluir/$linha->id", ' ', array('class' => 'fi-trash size-18')),               
+									anchor("usuarios/excluir/$linha->id", ' ', array('class' => 'fi-trash size-18', 'data-confirm' => 'Você tem certeza? Esta Operação não poderá ser desfeita!')),               
 									anchor("usuarios/visualizar/$linha->id", ' ', array('class' => 'fi-social-skillshare size-18')));
 								echo "</tr>";
-							endforeach;
+							 endforeach;
 						?>
 					</tbody>
 				</table>
 			</div>
-				
 		<?php
 		break;
 	case 'visualizar':
