@@ -104,6 +104,7 @@ function esta_logado($redir = TRUE){
 	$user_status = $CI->session->userdata('user_logado');
 	if (!isset($user_status) || $user_status != TRUE):
 		if ($redir):
+			$CI->session->set_userdata(array('redir_para' => current_url()));
 			set_msg('errologin', 'Acesso Restrito, você deve possuir um cadastro antes de prosseguir!', 'erro');
 			redirect('usuarios/login');
 		else:
@@ -154,4 +155,23 @@ function is_admin($set_msg = FALSE){
 	else:
 		return TRUE;
 	endif;
+}
+
+//gera um caminho de navegação com base no controller atual
+function breadcrumb(){
+	$CI =& get_instance();
+	$CI->load->helper('url');
+	$classe = ucfirst($CI->router->class); //informa qual a classe atual
+	if ($classe == 'Painel'):
+		$classe = anchor($CI->router->class, 'Incício');
+	else:
+		$classe = anchor($CI->router->class, $classe);
+	endif;
+	$metodo = ucwords(str_replace('_', ' ', $CI->router->method));
+	if ($metodo && $metodo != 'Index'):
+		$metodo = " &raquo ".anchor($CI->router->class."/".$CI->router->method, $metodo);
+	else:
+		$metodo = '';
+	endif;
+	return '<p>Sua Localização: '.anchor('painel', 'Início').' &raquo '.$classe.$metodo.'</p>';
 }
