@@ -23,6 +23,7 @@ class Usuarios extends CI_Controller {
 				$query = $this->usuarios_model->get_bylogin($usuario)->row();
 				$dados = array('user_id' => $query->id, 'username' => $query->nome, 'user_admin' => $query->adm, 'user_logado' => TRUE);
 				$this->session->set_userdata($dados);
+				auditoria('Login no sistema', 'Login efetuado com sucesso');
 				if ($redirect != ''):
 					redirect($redirect);
 				else:
@@ -52,6 +53,7 @@ class Usuarios extends CI_Controller {
 	}
 
 	public function logoff(){
+		auditoria('Logout no sistema', 'Logout efetuado com sucesso');
 		$this->session->unset_userdata(array('user_id' => '', 'username' => '', 'user_admin' => '', 'user_logado' => ''));
 		$this->session->sess_destroy(); //não precisaria a linha de cima, mas podem ficar dados no navegador, por isso ela.
 		$this->session->sess_create(); //em versoes anteriores a 2.1.3 o destroy terminava e logo criava a sessao automaticamente, mas depois dessa versão é preciso fazer isso, do contrário as flashdata não guardam os dados para a próxima requisição
@@ -70,6 +72,7 @@ class Usuarios extends CI_Controller {
 				if($this->sistema->enviar_email($email,'Nova senha de acesso', $mensagem)):
 					$dados['senha'] = md5($novasenha);
 					$this->usuarios_model->do_update($dados, array('email' => $email), FALSE);
+					auditoria('Reset de senha', 'O usuário solicitou uma nova senha por e-mail', TRUE, $email);
 					set_msg('msgok','Uma nova senha foi enviada para seu e-mail', 'sucesso');
 					redirect('usuarios/nova_senha');
 				else:

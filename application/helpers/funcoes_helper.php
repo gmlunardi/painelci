@@ -175,3 +175,28 @@ function breadcrumb(){
 	endif;
 	return '<p>Sua Localização: '.anchor('painel', 'Início').' &raquo '.$classe.$metodo.'</p>';
 }
+
+// seta um registro na tabela de auditoria
+function auditoria($operacao, $obs = '', $query = TRUE, $email = NULL){
+	$CI =& get_instance();
+	$CI->load->library('session');
+	$CI->load->model('auditoria_model');
+	if ($query):
+		$last_query = $CI->db->last_query();
+	else:
+		$last_query = '';
+	endif;
+	if (esta_logado(FALSE)):
+		$user_id = $CI->session->userdata('user_id');
+		$user_login = $CI->usuarios_model->get_byid($user_id)->row()->login;
+	else:
+		$user_login = $CI->usuarios_model->get_byemail($email)->row()->login;
+	endif;
+	$dados = array(
+		'usuario' => $user_login,
+		'operacao' => $operacao,
+		'query' => $last_query,
+		'observacao' => $obs
+		);
+	$CI->auditoria_model->do_insert($dados);
+}
