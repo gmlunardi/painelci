@@ -148,7 +148,7 @@ switch ($tela):
 			redirect('usuarios/gerenciar');
 		endif;
 		echo '<div class="large-12 columns">';
-			if (is_admin(TRUE) || $id_user == $this->session->userdata('user_id')):
+			if (is_admin() || $id_user == $this->session->userdata('user_id')):
 				$query = $this->usuarios_model->get_byid($id_user)->row();
 				erros_validacao();
 				get_msg('msgok');
@@ -189,6 +189,57 @@ switch ($tela):
 				echo form_close();
 				echo '</div>';
 			else:
+				set_msg('msgerro', 'Seu usuário não tem permissão para executar esta operação!', 'erro');
+				redirect('usuarios/gerenciar');
+			endif;
+		echo '</div>';
+		break;
+	case 'editar':
+		$id_user = $this->uri->segment(3);
+		if ($id_user == NULL):
+			set_msg('msgerro', 'Você precisa de um usuário para alterar');
+			redirect('usuarios/gerenciar');
+		endif;
+		echo '<div class="large-12 columns">';
+			if (is_admin() || $id_user == $this->session->userdata('user_id')):
+				$query = $this->usuarios_model->get_byid($id_user)->row();
+				erros_validacao();
+				get_msg('msgok');
+
+				echo form_open(current_url(), array('class' => 'custom'));
+				echo form_fieldset('Alterar Usuário');
+				
+				echo form_label('Nome Completo');
+				echo '<div class="row"> <div class="large-5 columns"> ';
+				echo form_input(array('name' => 'nome'), set_value('nome', $query->nome), 'autofocus');
+				echo '</div></div>';
+
+				echo form_label('Email');
+				echo '<div class="row"> <div class="large-5 columns"> ';
+				echo form_input(array('name' => 'email', 'disabled' => 'disabled'), set_value('email', $query->email));
+				echo '</div></div>';
+
+				echo form_label('Login');
+				echo '<div class="row"> <div class="large-4 columns"> ';
+				echo form_input(array('name' => 'login', 'disabled' => 'disabled'), set_value('login', $query->login));
+				echo '</div></div>';
+
+				echo '<div class="row"> <div class="large-5 columns"> ';
+				echo form_checkbox(array('name' => 'ativo'), '1', $query->ativo == 1 ? TRUE : FALSE).' Permitir o acesso deste usuário ao sistema. ';
+				echo '</div></div>';
+				echo '<div class="row"> <div class="large-5 columns"> ';
+				echo form_checkbox(array('name' => 'adm'), '1', $query->adm == 1 ? TRUE : FALSE).' Dar poderes administrativos a este usuário.<br />';
+				echo '</div></div>';
+
+				echo anchor('usuarios/gerenciar', 'Cancelar', array('class' => 'button radius alert'));
+				echo '&nbsp';
+				echo form_submit(array('name' => 'alterar_senha', 'class' => 'button radius'), 'Alterar Usuário');
+				echo form_hidden('idusuario', $id_user);
+				echo form_fieldset_close();
+				echo form_close();
+				echo '</div>';
+			else:
+				set_msg('msgerro', 'Seu usuário não tem permissão para executar esta operação!', 'erro');
 				redirect('usuarios/gerenciar');
 			endif;
 		echo '</div>';

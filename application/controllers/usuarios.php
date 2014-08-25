@@ -38,7 +38,7 @@ class Usuarios extends CI_Controller {
 				redirect('usuarios/login');
 			endif;
 		endif;
-		// esses sets do template devem ficar abaixo da lógica acima pois, senão, não funciona as msgs de erro/sucesso direito
+		// esses sets do template devem ficar abaixo da lógica acima pois, senão, não funciona as msgs de erro/sucesso direito  
 		set_tema('titulo','Login');
 		set_tema('conteudo', load_modulo('usuarios','login'));
 		set_tema('rodape', '');
@@ -125,6 +125,7 @@ class Usuarios extends CI_Controller {
 
 	public function alterar_senha(){
 		esta_logado();
+		$this->form_validation->set_message('matches', 'O campo %s está diferente do campo %s');
 		$this->form_validation->set_rules('senha', 'SENHA', 'trim|required|min_length[4]|strtolower');
 		$this->form_validation->set_rules('senha2', 'REPITA A NOVA SENHA', 'trim|required|min_length[4]|strtolower|matches[senha]');
 		if ($this->form_validation->run() == TRUE):
@@ -133,6 +134,21 @@ class Usuarios extends CI_Controller {
 		endif;
 		set_tema('titulo','Alterar senha');
 		set_tema('conteudo', load_modulo('usuarios','alterar_senha'));
+		load_template();
+	}
+
+	public function editar(){
+		esta_logado();
+		$this->form_validation->set_rules('nome', 'NOME', 'trim|required|ucwords');
+		if ($this->form_validation->run() == TRUE):
+
+			$dados['nome'] = $this->input->post('nome');
+			$dados['ativo'] = ($this->input->post('ativo') == 1 ? 1 : 0);
+			if (is_admin()) $dados['adm'] = ($this->input->post('adm') == 1) ? 1 : 0;
+			$this->usuarios_model->do_update($dados, array('id' => $this->input->post('idusuario')));
+		endif;
+		set_tema('titulo','Alterar Usuários');
+		set_tema('conteudo', load_modulo('usuarios','editar'));
 		load_template();
 	}
 
