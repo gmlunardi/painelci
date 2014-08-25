@@ -16,7 +16,8 @@ class Auditoria_model extends CI_Model{
 
 	}
 
-	public function get_all(){
+	public function get_all($limit = 0){
+		if ($limit > 0) $this->db->limit($limit);
 		return $this->db->get('auditoria');
 	}
 

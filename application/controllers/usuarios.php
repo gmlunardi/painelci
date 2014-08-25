@@ -115,8 +115,7 @@ class Usuarios extends CI_Controller {
 
 	public function gerenciar(){
 		esta_logado();
-		set_tema('headerinc', load_css(array('jquery.dataTables.min')), FALSE);
-		set_tema('footerinc', load_js(array('jquery', 'jquery.dataTables.min', 'table')), FALSE);
+
 		
 
 		set_tema('titulo','Listagem de Usuários');
